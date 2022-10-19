@@ -1,13 +1,9 @@
-import pygame
 import globalVariables as gV
+from Collidables import Instance
 
-class enemy:
-    objType = "Enemy"
+class Enemy(Instance):
     def __init__(self):
-        self.position = [0,0]
-        self.movementSpeed = 4
-        self.sprite = pygame.image.load('images/enemy.png')
-        self.size = (self.sprite.get_width(),self.sprite.get_height())
+        super().__init__("Enemy", [0,0], 4, 'images/enemy.png')
 
     def move(self):
         self.position[0] += self.movementSpeed

@@ -1,10 +1,10 @@
 import sys
 import pygame
 from random import randint
-from MissileClass import Missile as M
+from Missiles import Missile as M
 import globalVariables as gV
-from player import player as P
-from enemy import enemy as E
+from Player import Player as P
+from Enemies import Enemy as E
 from Background import Background
 
 pygame.init()
@@ -60,9 +60,9 @@ while gV.gameRunning:
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                player1.playerSpeed = -3
+                player1.movementSpeed = -3
             elif event.key == pygame.K_RIGHT:
-                player1.playerSpeed = 3
+                player1.movementSpeed = 3
             elif event.key == pygame.K_SPACE:
                 #  cooldown check, missile spawn only every 0.3 seconds
                 if gV.game_clock - gV.time_since_last_missile >= 300:
@@ -75,9 +75,9 @@ while gV.gameRunning:
                     gV.time_since_last_missile = pygame.time.get_ticks()
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
-                player1.playerSpeed = 0
+                player1.movementSpeed = 0
             elif event.key == pygame.K_RIGHT:
-                player1.playerSpeed = 0
+                player1.movementSpeed = 0
         if event.type == pygame.QUIT:
             sys.exit()
             pygame.quit()

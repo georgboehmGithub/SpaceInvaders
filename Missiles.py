@@ -1,14 +1,13 @@
-from bombs import *
-class Missile:
-    objType = "Missile"
+from Bombs import *
+from Collidables import Instance
+import pygame
+
+class Missile(Instance):
     def __init__(self):
         self.last = pygame.time.get_ticks()
         self.cooldown = 300
         self.color = (0,0,255,255)
-        self.position = [0,0]
-        self.movementSpeed = 0
-        self.sprite = pygame.image.load('images/missile.png')
-        self.size = (self.sprite.get_width(), self.sprite.get_height())
+        super().__init__("Missile", [0,0], 0, "images/missile.png")
 
     def move(self):
         self.position[1] += self.movementSpeed
@@ -17,8 +16,8 @@ class Missile:
         else:
             for obj in gV.collidables:
                 if obj.objType == "Enemy":
-                    if collisionCheck(self,obj):
-                        bomb1 = bomb()
+                    if collisionCheck(self, obj):
+                        bomb1 = Bomb()
                         gV.collidables.append(bomb1)
                         bomb1.position[0] = obj.position[0]
                         bomb1.position[1] = obj.position[1]
