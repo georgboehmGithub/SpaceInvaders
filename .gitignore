@@ -3,3 +3,6 @@
 
 # Ignore .idea files
 *.idea
+
+# Ignore any pycache
+__pycache__/*.pyc

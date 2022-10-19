@@ -5,6 +5,7 @@ from Collidables import Instance
 
 class Player(Instance):
     def __init__(self):
+        self.weapon = 0
         self.sprite = pygame.image.load('images/player.png')
         self.size = (self.sprite.get_width(), self.sprite.get_height())
         self.position = [gV.WindowSize[0] / 2, gV.WindowSize[1] - self.size[1]]
@@ -18,3 +19,8 @@ class Player(Instance):
                     gV.gameOver = True
         if self.position[0] <= 0 or self.position[0] + self.size[0] >= gV.WindowSize[0]:
             self.movementSpeed = 0
+
+    # TODO: Interaction between player and items collected
+    # TODO: Change weapon value and check per press of spacebar what the ammunition is and update accordingly
+    def printItemCollect(self):
+        print("Special item received!")

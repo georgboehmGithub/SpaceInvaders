@@ -1,6 +1,8 @@
 from Bombs import *
+from Items import *
 from Collidables import Instance
 import pygame
+from random import randint
 
 class Missile(Instance):
     def __init__(self):
@@ -17,10 +19,14 @@ class Missile(Instance):
             for obj in gV.collidables:
                 if obj.objType == "Enemy":
                     if collisionCheck(self, obj):
-                        bomb1 = Bomb()
-                        gV.collidables.append(bomb1)
-                        bomb1.position[0] = obj.position[0]
-                        bomb1.position[1] = obj.position[1]
+                        r = randint(0, 10)
+                        if r == 10:
+                            drop = Ray()
+                        else:
+                            drop = Bomb()
+                        gV.collidables.append(drop)
+                        drop.position[0] = obj.position[0]
+                        drop.position[1] = obj.position[1]
                         gV.collidables.remove(self)
                         gV.collidables.remove(obj)
                         gV.hits += 1
