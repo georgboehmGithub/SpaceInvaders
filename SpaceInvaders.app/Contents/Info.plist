@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>SpaceInvaders</string>
+	<key>CFBundleExecutable</key>
+	<string>SpaceInvaders</string>
+	<key>CFBundleIconFile</key>
+	<string>generated-e364404d099bcee4cc21fea55d3a9174f36cf0490d45dc6a3e602abc78319036.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>SpaceInvaders</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>SpaceInvaders</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.0.0</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+</dict>
+</plist>

@@ -3,6 +3,8 @@ from Items import *
 from Collidables import Instance
 import pygame
 from random import randint
+import globalVariables as gV
+
 
 class Missile(Instance):
     def __init__(self):

@@ -2,7 +2,7 @@ from Collidables import Instance
 import globalVariables as gV
 from collisionCheck import collisionCheck
 
-
+# Item/Missile ideas: https://opengameart.org/content/bullet-collection-1-m484
 class Ray(Instance):
     def __init__(self):
         self.itemId = 1
