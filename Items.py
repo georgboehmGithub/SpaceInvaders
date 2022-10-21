@@ -17,4 +17,4 @@ class Ray(Instance):
                 if obj.objType == "Player":
                     if collisionCheck(self, obj):
                         gV.collidables.remove(self)
-                        obj.printItemCollect()
+                        obj.itemCollect(self.itemId)

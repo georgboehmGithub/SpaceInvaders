@@ -2,10 +2,11 @@ import pygame
 from collisionCheck import collisionCheck
 import globalVariables as gV
 from Collidables import Instance
+from Weapon import Weapon
 
 class Player(Instance):
     def __init__(self):
-        self.weapon = 0
+        self.weapon = Weapon()
         self.sprite = pygame.image.load('images/player.png')
         self.size = (self.sprite.get_width(), self.sprite.get_height())
         self.position = [gV.WindowSize[0] / 2, gV.WindowSize[1] - self.size[1]]
@@ -22,5 +23,6 @@ class Player(Instance):
 
     # TODO: Interaction between player and items collected
     # TODO: Change weapon value and check per press of spacebar what the ammunition is and update accordingly
-    def printItemCollect(self):
-        print("Special item received!")
+    def itemCollect(self, itemId: int):
+        self.weapon.active = "Advanced"
+

@@ -7,11 +7,11 @@ import globalVariables as gV
 
 
 class Missile(Instance):
-    def __init__(self):
+    def __init__(self, damage, image, cooldown):
         self.last = pygame.time.get_ticks()
-        self.cooldown = 300
-        self.color = (0,0,255,255)
-        super().__init__("Missile", [0,0], 0, "images/missile.png")
+        self.cooldown = cooldown
+        self.damage = damage
+        super().__init__("Missile", [0,0], 0, image)
 
     def move(self):
         self.position[1] += self.movementSpeed
@@ -21,8 +21,8 @@ class Missile(Instance):
             for obj in gV.collidables:
                 if obj.objType == "Enemy":
                     if collisionCheck(self, obj):
-                        r = randint(0, 10)
-                        if r == 10:
+                        r = randint(0, 2)
+                        if r == 2:
                             drop = Ray()
                         else:
                             drop = Bomb()

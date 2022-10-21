@@ -64,14 +64,15 @@ while gV.gameRunning:
             elif event.key == pygame.K_RIGHT:
                 player1.movementSpeed = 3
             elif event.key == pygame.K_SPACE:
+                curWeapon = player1.weapon.getWeapon()
                 #  cooldown check, missile spawn only every 0.3 seconds
-                if gV.game_clock - gV.time_since_last_missile >= 300:
-                    caliber1 = Missiles.Missile()
+                if gV.game_clock - gV.time_since_last_missile >= curWeapon["cooldown"]:
+                    caliber = Missiles.Missile(curWeapon["damage"], curWeapon["image"], curWeapon["cooldown"])
                     pygame.mixer.Sound.play(missile_sound)
-                    gV.collidables.append(caliber1)
-                    caliber1.movementSpeed = -4
-                    caliber1.position[0] = player1.position[0] + player1.size[0]/2 - caliber1.size[0]/2
-                    caliber1.position[1] = player1.position[1] - caliber1.size[1]
+                    gV.collidables.append(caliber)
+                    caliber.movementSpeed = -4
+                    caliber.position[0] = player1.position[0] + player1.size[0] / 2 - caliber.size[0] / 2
+                    caliber.position[1] = player1.position[1] - caliber.size[1]
                     gV.time_since_last_missile = pygame.time.get_ticks()
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
