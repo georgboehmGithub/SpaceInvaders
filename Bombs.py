@@ -1,17 +1,19 @@
 import globalVariables as gV
-from collisionCheck import collisionCheck
-from Collidables import Instance
+import pygame as pg
 
-class Bomb(Instance):
+class Bomb(pg.sprite.Sprite):
     def __init__(self):
-        super().__init__("Bomb", [0, 0], 2, 'images/bomb.png')
+        pg.sprite.Sprite.__init__(self)
+        self.objType = "Bomb"
+        self.position = [0, 0]
+        self.movementSpeed = 2
+        self.image = pg.image.load('images/bomb.png')
+        self.size = (self.image.get_width(), self.image.get_height())
+        self.rect = self.image.get_rect()
+        self.rect.center = self.position
 
-    def move(self):
-        self.position[1] += self.movementSpeed
-        if self.position[1] == gV.WindowSize[1]:
-            gV.collidables.remove(self)
-        else:
-            for obj in gV.collidables:
-                if obj.objType == "Player":
-                    if collisionCheck(self,obj):
-                        gV.gameOver = True
+    def update(self):
+        self.rect = self.rect.move(0, self.movementSpeed)
+        collided = pg.sprite.spritecollide(self, gV.PLAYERS, dokill=False)
+        if len(collided) > 0:
+            gV.gameRunning = False

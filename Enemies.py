@@ -1,22 +1,22 @@
 import globalVariables as gV
-from Collidables import Instance
+import pygame as pg
 
-class Enemy(Instance):
+class Enemy(pg.sprite.Sprite):
     def __init__(self):
-        super().__init__("Enemy", [0,0], 4, 'images/enemy.png')
+        pg.sprite.Sprite.__init__(self)
+        self.objType = "Enemy"
+        self.position = [50,30]
+        self.movementSpeed = 4
+        self.image = pg.image.load('images/enemy.png')
+        self.size = (self.image.get_width(), self.image.get_height())
+        self.rect = self.image.get_rect()
+        self.rect.center = self.position
 
-    def move(self):
-        self.position[0] += self.movementSpeed
-        if self.position[0] + self.size[0] > gV.WindowSize[0]:
-            self.movementSpeed = self.movementSpeed * (-1)
-            self.position[1] += self.size[1]
-            self.position[0] = gV.WindowSize[0] - self.size[0]
-        elif self.position[0] < 0:
-            self.movementSpeed = self.movementSpeed * (-1)
-            self.position[1] += self.size[1]
-            self.position[0] = 0
-            
-
-        
-
-
+    def update(self):
+        self.rect = self.rect.move(self.movementSpeed, 0)
+        if self.rect.left < 0:
+            self.movementSpeed = self.movementSpeed * -1
+            self.rect = self.rect.move(0, self.image.get_height())
+        if self.rect.right > gV.WindowSize[0]:
+            self.movementSpeed = self.movementSpeed * -1
+            self.rect = self.rect.move(0, self.image.get_height())
