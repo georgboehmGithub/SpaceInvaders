@@ -59,6 +59,7 @@ class GameState():
                 sys.exit()
 
     def intro(self):
+        # Draw scene
         gameWindow.blit(bg, (0, 0))
         pygame.draw.rect(gameWindow, color="grey", rect=self.startButton)
         draw_text("Start", (255, 255, 255), 25, list(self.startButton.center))
@@ -66,6 +67,7 @@ class GameState():
         pygame.display.flip()
         gV.game_clock = pygame.time.get_ticks()
 
+        # Handle events
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mousePos = pygame.mouse.get_pos()
@@ -78,6 +80,7 @@ class GameState():
         if not gV.gameRunning:
             self.state = "game_over"
             return
+        # Draw scene
         gameWindow.blit(bg, (0, 0))
         SPRITES.draw(gameWindow)
         MOBS.draw(gameWindow)
@@ -86,6 +89,7 @@ class GameState():
         pygame.display.update()
         pygame.display.flip()
 
+        # Spawn new mobs
         gV.game_clock = pygame.time.get_ticks()
         r = randint(0, 50)
         if r == 50:
@@ -93,7 +97,11 @@ class GameState():
             gV.collidables.append(alien)
             gV.MOBS.add(alien)
 
+        # Handle events
         for event in pygame.event.get():
+
+
+
             if event.type == pygame.KEYDOWN:
                 # TODO: Let player class handle events individually
                 if event.key == pygame.K_LEFT:
@@ -122,7 +130,7 @@ class GameState():
         SPRITES.update()
         MOBS.update()
         PLAYERS.update()
-        
+
 # main procedure
 gameState = GameState()
 while True:
