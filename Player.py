@@ -11,13 +11,12 @@ class Player(pg.sprite.Sprite):
         self.weapon = Weapon()
         self.image = pg.image.load('images/player.png')
         self.size = (self.image.get_width(), self.image.get_height())
-        self.position = [gV.WindowSize[0] / 2, gV.WindowSize[1] - self.size[1]]
         self.objType = "Player"
         self.movementSpeed = 0
         self.image = pg.image.load('images/player.png')
         self.size = (self.image.get_width(), self.image.get_height())
         self.rect = self.image.get_rect()
-        self.rect.center = self.position
+        self.rect.center = [gV.WindowSize[0] / 2, gV.WindowSize[1] - self.size[1]]
 
     def setMissileSound(self, sound: pg.mixer.Sound):
         self.missileSound = sound

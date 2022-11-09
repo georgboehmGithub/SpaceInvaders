@@ -11,15 +11,11 @@ pygame.mixer.init()
 missile_sound = pygame.mixer.Sound("sounds/Blaster-Solo.wav")
 # Window
 gameWindow = pygame.display.set_mode(gV.WindowSize)
-# generals
-SPRITES = gV.SPRITES
-MOBS = gV.MOBS
-PLAYERS = gV.PLAYERS
 clock = pygame.time.Clock()
 # player
 player1 = gV.player1
 player1.setMissileSound(missile_sound)
-PLAYERS.add(player1)
+gV.PLAYERS.add(player1)
 # Background
 bg = pygame.image.load("images/background.png")
 
@@ -50,7 +46,7 @@ class GameState():
         pygame.display.update()
         pygame.display.flip()
         gV.game_clock = pygame.time.get_ticks()
-
+        # Handle events
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mousePos = pygame.mouse.get_pos()
@@ -67,7 +63,6 @@ class GameState():
         pygame.display.update()
         pygame.display.flip()
         gV.game_clock = pygame.time.get_ticks()
-
         # Handle events
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -83,26 +78,24 @@ class GameState():
             return
         # Draw scene
         gameWindow.blit(bg, (0, 0))
-        SPRITES.draw(gameWindow)
-        MOBS.draw(gameWindow)
-        PLAYERS.draw(gameWindow)
+        gV.SPRITES.draw(gameWindow)
+        gV.MOBS.draw(gameWindow)
+        gV.PLAYERS.draw(gameWindow)
         draw_text(str(gV.hits), (255, 255, 255), 25, [gV.WindowSize[0] / 2, 20])
         pygame.display.update()
         pygame.display.flip()
-
         # Spawn new mobs
         gV.game_clock = pygame.time.get_ticks()
-        r = randint(0, 50)
-        if r == 50:
+        r = randint(0, 10)
+        if r == 1:
             alien = Enemies.Enemy()
             gV.MOBS.add(alien)
-
         # Handle events
         player1.handleEvents()
         # pygame.quit()
-        SPRITES.update()
-        MOBS.update()
-        PLAYERS.update()
+        gV.SPRITES.update()
+        gV.MOBS.update()
+        gV.PLAYERS.update()
 
 # main procedure
 gameState = GameState()

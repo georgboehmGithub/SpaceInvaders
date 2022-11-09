@@ -8,18 +8,17 @@ class Missile(pg.sprite.Sprite):
     def __init__(self, damage, image, cooldown):
         pg.sprite.Sprite.__init__(self)
         self.objType = "Missile"
-        self.position = [0,0]
         self.movementSpeed = -4
         self.image = pygame.image.load(image)
         self.size = (self.image.get_width(), self.image.get_height())
         self.rect = self.image.get_rect()
-        self.rect.center = self.position
+        self.rect.center = [0,0]
         self.last = pygame.time.get_ticks()
         self.cooldown = cooldown
         self.damage = damage
 
     def update(self):
-        if self.position[1] < 0:
+        if self.rect.bottom < 0:
             self.kill()
         self.rect = self.rect.move(0, self.movementSpeed)
         collided = pygame.sprite.spritecollide(self, gV.MOBS, dokill=True)

@@ -5,12 +5,11 @@ class Enemy(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.objType = "Enemy"
-        self.position = [50,30]
         self.movementSpeed = 4
         self.image = pg.image.load('images/enemy.png')
         self.size = (self.image.get_width(), self.image.get_height())
         self.rect = self.image.get_rect()
-        self.rect.center = self.position
+        self.rect.center = [50,30]
 
     def update(self):
         self.rect = self.rect.move(self.movementSpeed, 0)
