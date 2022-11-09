@@ -9,7 +9,7 @@ class Missile(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self)
         self.objType = "Missile"
         self.position = [0,0]
-        self.movementSpeed = 0
+        self.movementSpeed = -4
         self.image = pygame.image.load(image)
         self.size = (self.image.get_width(), self.image.get_height())
         self.rect = self.image.get_rect()

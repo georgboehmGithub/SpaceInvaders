@@ -1,7 +1,6 @@
 import pygame
 import Player
 
-collidables = []
 WindowSize = [512,512]
 hits = 0
 gameRunning = True
