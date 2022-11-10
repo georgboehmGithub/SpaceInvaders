@@ -1,4 +1,3 @@
-from Bombs import *
 from Items import *
 import pygame
 import pygame as pg
@@ -28,8 +27,8 @@ class Missile(pg.sprite.Sprite):
             # Roll drop chance
             r = randint(0, 2)
             if r == 2:
-                drop = Item(1)  # TODO: Add id to constructor, determines item dropped
+                drop = Item(1, 'images/bomb_powerup.png')  # TODO: Add id to constructor, determines item dropped
             else:
-                drop = Bomb()
+                drop = Item(0, "images/bomb.png")
             drop.rect.center = collided[0].rect.center
             gV.SPRITES.add(drop)

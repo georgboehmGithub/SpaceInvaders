@@ -3,12 +3,12 @@ import globalVariables as gV
 
 # Item/Missile ideas: https://opengameart.org/content/bullet-collection-1-m484
 class Item(pg.sprite.Sprite):
-    def __init__(self, id):
+    def __init__(self, id, img):
         pg.sprite.Sprite.__init__(self)
         self.id = id
         self.objType = "Item"
         self.movementSpeed = 2
-        self.image = pg.image.load("images/bomb_powerup.png")
+        self.image = pg.image.load(img)
         self.size = (self.image.get_width(), self.image.get_height())
         self.rect = self.image.get_rect()
         self.rect.center = [0,0]
@@ -20,4 +20,4 @@ class Item(pg.sprite.Sprite):
         collided = pg.sprite.spritecollide(self, gV.PLAYERS, dokill=False)
         if len(collided) > 0:
             self.kill()
-            gV.player1.itemCollect(1)
+            gV.player1.itemCollect(self.id)

@@ -86,7 +86,7 @@ class GameState():
         pygame.display.flip()
         # Spawn new mobs
         gV.game_clock = pygame.time.get_ticks()
-        r = randint(0, 10)
+        r = randint(0, 50)
         if r == 1:
             alien = Enemies.Enemy()
             gV.MOBS.add(alien)

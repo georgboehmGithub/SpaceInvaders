@@ -59,4 +59,7 @@ class Player(pg.sprite.Sprite):
     # TODO: Interaction between player and items collected
     # TODO: Change weapon value and check per press of spacebar what the ammunition is and update accordingly
     def itemCollect(self, itemId: int):
-        self.weapon.active = "Advanced"
+        if itemId == 0: # Bomb collected
+            gV.gameRunning = False
+        if itemId == 1:
+            self.weapon.active = "Advanced"
