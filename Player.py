@@ -13,7 +13,6 @@ class Player(pg.sprite.Sprite):
         self.size = (self.image.get_width(), self.image.get_height())
         self.objType = "Player"
         self.movementSpeed = 0
-        self.image = pg.image.load('images/player.png')
         self.size = (self.image.get_width(), self.image.get_height())
         self.rect = self.image.get_rect()
         self.rect.center = [gV.WindowSize[0] / 2, gV.WindowSize[1] - self.size[1]]

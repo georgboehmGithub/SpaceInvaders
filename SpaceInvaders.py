@@ -17,7 +17,7 @@ player1 = gV.player1
 player1.setMissileSound(missile_sound)
 gV.PLAYERS.add(player1)
 # Background
-bg = pygame.image.load("images/background.png")
+bg = pygame.image.load("images/background.png").convert()
 
 def draw_text(text: str, color: tuple, size: int, position: list):
     font = pygame.font.SysFont(None, size)
