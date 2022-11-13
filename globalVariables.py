@@ -1,5 +1,6 @@
 import pygame
 import Player
+import Items
 
 WindowSize = [512,512]
 hits = 0
@@ -10,3 +11,4 @@ SPRITES = pygame.sprite.Group()
 MOBS = pygame.sprite.Group()
 PLAYERS = pygame.sprite.Group()
 player1 = Player.Player()
+ITEMS = Items.ItemList()

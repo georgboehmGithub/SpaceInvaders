@@ -4,17 +4,25 @@ import pygame as pg
 from random import randint
 
 class Missile(pg.sprite.Sprite):
-    def __init__(self, damage, image, cooldown):
+    def __init__(self, damage, image, cooldown, pos):
         pg.sprite.Sprite.__init__(self)
         self.objType = "Missile"
         self.movementSpeed = -4
         self.image = pygame.image.load(image)
         self.size = (self.image.get_width(), self.image.get_height())
         self.rect = self.image.get_rect()
-        self.rect.center = [0,0]
+        self.rect.center = self.setPosition(pos)
         self.last = pygame.time.get_ticks()
         self.cooldown = cooldown
         self.damage = damage
+
+    def setPosition(self, position):
+        if position == "topright":
+            return gV.player1.rect.topright
+        elif position == "topleft":
+            return gV.player1.rect.topleft
+        else:
+            return gV.player1.rect.midtop
 
     def update(self):
         if self.rect.bottom < 0:
@@ -24,11 +32,12 @@ class Missile(pg.sprite.Sprite):
         if len(collided) > 0: # missile collided with an enemy
             self.kill()
             gV.hits += 1
-            # Roll drop chance
-            r = randint(0, 2)
-            if r == 2:
-                drop = Item(1, 'images/bomb_powerup.png')  # TODO: Add id to constructor, determines item dropped
-            else:
-                drop = Item(0, "images/bomb.png")
-            drop.rect.center = collided[0].rect.center
-            gV.SPRITES.add(drop)
+            # Roll drop chance and spawn item based on it
+            r = randint(0, 100)
+            drop = None
+            for itemId in gV.ITEMS.items:
+                if r in gV.ITEMS.items[itemId]["roll"]:
+                    drop = Item(itemId, gV.ITEMS.items[itemId]["image"])
+            if drop is not None:
+                drop.rect.center = collided[0].rect.center
+                gV.SPRITES.add(drop)

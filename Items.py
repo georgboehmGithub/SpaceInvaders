@@ -21,10 +21,10 @@ class Item(pg.sprite.Sprite):
         if len(collided) > 0:
             self.kill()
             gV.player1.itemCollect(self.id)
-# TODO: CONTINUE W ITEMS HERE
+
 class ItemList():
     def __init__(self):
         self.items = {
-            0: {"name": "Bomb", "roll": range(0, 20), "image": "images/bomb.png"},
-            1: {"name": "Weapon2", "roll": 21, "image": "images/bomb_powerup.png"}
+            0: {"name": "Bomb", "roll": range(0, 20), "image": "images/bomb.png", "type": "threat"},
+            1: {"name": "Weapon2", "roll": range(20,40), "image": "images/bomb_powerup.png", "type": "weapon"}
         }

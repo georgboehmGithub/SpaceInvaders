@@ -15,6 +15,7 @@ clock = pygame.time.Clock()
 # player
 player1 = gV.player1
 player1.setMissileSound(missile_sound)
+player1.setWeapon()
 gV.PLAYERS.add(player1)
 # Background
 bg = pygame.image.load("images/background.png").convert()

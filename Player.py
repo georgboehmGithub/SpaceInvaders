@@ -8,7 +8,6 @@ import sys
 class Player(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
-        self.weapon = Weapon()
         self.image = pg.image.load('images/player.png')
         self.size = (self.image.get_width(), self.image.get_height())
         self.objType = "Player"
@@ -19,6 +18,9 @@ class Player(pg.sprite.Sprite):
 
     def setMissileSound(self, sound: pg.mixer.Sound):
         self.missileSound = sound
+
+    def setWeapon(self):
+        self.weapon = Weapon()
 
     def handleEvents(self):
         for event in pg.event.get():
@@ -31,11 +33,13 @@ class Player(pg.sprite.Sprite):
                     curWeapon = self.weapon.getWeapon()
                     #  missile cooldown check
                     if gV.game_clock - gV.time_since_last_missile >= curWeapon["cooldown"]:
-                        caliber = Missiles.Missile(curWeapon["damage"], curWeapon["image"], curWeapon["cooldown"])
+                        # spawn missiles
                         pg.mixer.Sound.play(self.missileSound)
-                        gV.SPRITES.add(caliber)
-                        caliber.rect.center = self.rect.midtop
-                        gV.time_since_last_missile = pg.time.get_ticks()
+                        for m in range(curWeapon["amount"]):
+                            caliber = Missiles.Missile(curWeapon["damage"], curWeapon["image"],
+                                                       curWeapon["cooldown"], curWeapon["position"][m])
+                            gV.SPRITES.add(caliber)
+                            gV.time_since_last_missile = pg.time.get_ticks()
             if event.type == pg.KEYUP:
                 if event.key == pg.K_LEFT:
                     self.movementSpeed = 0
@@ -58,7 +62,8 @@ class Player(pg.sprite.Sprite):
     # TODO: Interaction between player and items collected
     # TODO: Change weapon value and check per press of spacebar what the ammunition is and update accordingly
     def itemCollect(self, itemId: int):
-        if itemId == 0: # Bomb collected
+        item = gV.ITEMS.items[itemId]
+        if item["type"] == "threat":
             gV.gameRunning = False
-        if itemId == 1:
-            self.weapon.active = "Advanced"
+        if item["type"] == "weapon":
+            self.weapon.active = item["name"]
