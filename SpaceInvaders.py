@@ -19,12 +19,21 @@ player1.setWeapon()
 gV.PLAYERS.add(player1)
 # Background
 bg = pygame.image.load("images/background.png").convert()
+# Hitpoints
+hp = pygame.image.load("images/life.png").convert()
 
 def draw_text(text: str, color: tuple, size: int, position: list):
     font = pygame.font.SysFont(None, size)
     screen_text = font.render(text, True, color)
     text_rect = screen_text.get_rect(center=(position[0], position[1]))
     gameWindow.blit(screen_text, text_rect)
+
+def draw_hitpoints(hitpoints):
+    x = 10
+    y = 10
+    for hitpoint in range(hitpoints):
+        gameWindow.blit(hp, (x,y))
+        x += 40
 
 class GameState():
     def __init__(self):
@@ -78,11 +87,12 @@ class GameState():
             self.state = "game_over"
             return
         # Draw scene
-        gameWindow.blit(bg, (0, 0))
+        gameWindow.blit(bg, (0, 0)) # background
+        draw_hitpoints(player1.hitpoints) # HP
         gV.SPRITES.draw(gameWindow)
         gV.MOBS.draw(gameWindow)
         gV.PLAYERS.draw(gameWindow)
-        draw_text(str(gV.hits), (255, 255, 255), 25, [gV.WindowSize[0] / 2, 20])
+        draw_text(str(gV.hits), (255, 255, 255), 25, [gV.WindowSize[0] / 2, 20]) # Score
         pygame.display.update()
         pygame.display.flip()
         # Spawn new mobs
@@ -93,7 +103,6 @@ class GameState():
             gV.MOBS.add(alien)
         # Handle events
         player1.handleEvents()
-        # pygame.quit()
         gV.SPRITES.update()
         gV.MOBS.update()
         gV.PLAYERS.update()

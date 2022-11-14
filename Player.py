@@ -11,6 +11,7 @@ class Player(pg.sprite.Sprite):
         self.image = pg.image.load('images/player.png')
         self.size = (self.image.get_width(), self.image.get_height())
         self.objType = "Player"
+        self.hitpoints = 3
         self.movementSpeed = 0
         self.size = (self.image.get_width(), self.image.get_height())
         self.rect = self.image.get_rect()
@@ -64,6 +65,9 @@ class Player(pg.sprite.Sprite):
     def itemCollect(self, itemId: int):
         item = gV.ITEMS.items[itemId]
         if item["type"] == "threat":
-            gV.gameRunning = False
+            if self.hitpoints > 1:
+                self.hitpoints = self.hitpoints - 1
+            else:
+                gV.gameRunning = False
         if item["type"] == "weapon":
             self.weapon.active = item["name"]
