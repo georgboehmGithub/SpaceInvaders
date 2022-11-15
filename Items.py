@@ -26,5 +26,5 @@ class ItemList():
     def __init__(self):
         self.items = {
             0: {"name": "Bomb", "roll": range(0, 20), "image": "images/bomb.png", "type": "threat"},
-            1: {"name": "Weapon2", "roll": range(20,40), "image": "images/bomb_powerup.png", "type": "weapon"}
+            1: {"name": "Weapon2", "roll": range(20,70), "image": "images/bomb_powerup.png", "type": "weapon"}
         }

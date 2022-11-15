@@ -41,6 +41,7 @@ class Player(pg.sprite.Sprite):
                                                        curWeapon["cooldown"], curWeapon["position"][m])
                             gV.SPRITES.add(caliber)
                             gV.time_since_last_missile = pg.time.get_ticks()
+                            self.weapon.decreaseAmmo(self.weapon.getWeapon()["name"]) # update ammo
             if event.type == pg.KEYUP:
                 if event.key == pg.K_LEFT:
                     self.movementSpeed = 0
@@ -59,6 +60,11 @@ class Player(pg.sprite.Sprite):
             self.rect.left = 0
         if self.rect.right >= gV.WindowSize[0]:
             self.rect.right = gV.WindowSize[0]
+        # Check ammo
+        if self.weapon.getWeapon()["ammo"][0] == 0 and self.weapon.getWeapon()["name"] != "Basic":
+            self.weapon.resetAmmo(self.weapon.getWeapon()["name"])
+            self.weapon.active = "Basic"
+
 
     # TODO: Interaction between player and items collected
     # TODO: Change weapon value and check per press of spacebar what the ammunition is and update accordingly
@@ -70,4 +76,7 @@ class Player(pg.sprite.Sprite):
             else:
                 gV.gameRunning = False
         if item["type"] == "weapon":
-            self.weapon.active = item["name"]
+            if self.weapon.active == item["name"]: # Weapon is currently active
+                self.weapon.resetAmmo(self.weapon.getWeapon()["name"])
+            else:
+                self.weapon.active = item["name"]

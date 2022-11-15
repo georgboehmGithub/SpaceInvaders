@@ -30,10 +30,15 @@ def draw_text(text: str, color: tuple, size: int, position: list):
 
 def draw_hitpoints(hitpoints):
     x = 10
-    y = 10
     for hitpoint in range(hitpoints):
-        gameWindow.blit(hp, (x,y))
+        gameWindow.blit(hp, (x, 10))
         x += 40
+
+def draw_weapon():
+    gameWindow.blit(pygame.image.load(
+        player1.weapon.getWeapon()["display"]).convert(), (gV.WindowSize[0] - 40, 10)
+                    )
+    draw_text(str(player1.weapon.getWeapon()["ammo"][0]), (255, 255, 255), 25, [gV.WindowSize[0] - 70, 20])
 
 class GameState():
     def __init__(self):
@@ -87,8 +92,9 @@ class GameState():
             self.state = "game_over"
             return
         # Draw scene
-        gameWindow.blit(bg, (0, 0)) # background
-        draw_hitpoints(player1.hitpoints) # HP
+        gameWindow.blit(bg, (0, 0)) # Background
+        draw_hitpoints(player1.hitpoints) # Hitpoints
+        draw_weapon() # Active weapon
         gV.SPRITES.draw(gameWindow)
         gV.MOBS.draw(gameWindow)
         gV.PLAYERS.draw(gameWindow)
@@ -97,7 +103,7 @@ class GameState():
         pygame.display.flip()
         # Spawn new mobs
         gV.game_clock = pygame.time.get_ticks()
-        r = randint(0, 50)
+        r = randint(0, 60)
         if r == 1:
             alien = Enemies.Enemy()
             gV.MOBS.add(alien)
