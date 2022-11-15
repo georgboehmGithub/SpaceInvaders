@@ -7,7 +7,7 @@ class Missile(pg.sprite.Sprite):
     def __init__(self, damage, image, cooldown, pos):
         pg.sprite.Sprite.__init__(self)
         self.objType = "Missile"
-        self.movementSpeed = -4
+        self.movementSpeed = -10
         self.image = pygame.image.load(image)
         self.size = (self.image.get_width(), self.image.get_height())
         self.rect = self.image.get_rect()
@@ -24,14 +24,21 @@ class Missile(pg.sprite.Sprite):
         else:
             return gV.player1.rect.midtop
 
+    def subtractHitpoints(self, collided: list):
+        for enemy in collided:
+            enemy.hitpoints -= 1
+            if enemy.hitpoints == 0:
+                enemy.kill()
+                gV.hits += 1
+
     def update(self):
         if self.rect.bottom < 0:
             self.kill()
         self.rect = self.rect.move(0, self.movementSpeed)
-        collided = pygame.sprite.spritecollide(self, gV.MOBS, dokill=True)
+        collided = pygame.sprite.spritecollide(self, gV.MOBS, dokill=False)
         if len(collided) > 0: # missile collided with an enemy
             self.kill()
-            gV.hits += 1
+            self.subtractHitpoints(collided)
             # Roll drop chance and spawn item based on it
             r = randint(0, 100)
             drop = None

@@ -6,7 +6,7 @@ class Enemy(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self)
         self.objType = "Enemy"
         self.movementSpeed = 4
-        self.hitpoints = 3
+        self.hitpoints = 1
         self.image = pg.image.load('images/enemy.png')
         self.size = (self.image.get_width(), self.image.get_height())
         self.rect = self.image.get_rect()
