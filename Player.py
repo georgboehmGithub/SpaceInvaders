@@ -1,5 +1,5 @@
 import globalVariables as gV
-from Weapon import Weapon
+from Weapon import Weapon, Armory
 import pygame as pg
 import Missiles
 import sys
@@ -10,9 +10,13 @@ class Player(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.image.load('images/player.png')
         self.size = (self.image.get_width(), self.image.get_height())
+        self.armory = Armory()
+        self.weapons = [Weapon(self.armory.modes["Basic"])]
+        self.activeWeapon = self.weapons[0]
         self.objType = "Player"
         self.hitpoints = 3
-        self.movementSpeed = 0
+        self.movementSpeedX = 0
+        self.movementSpeedY = 0
         self.size = (self.image.get_width(), self.image.get_height())
         self.rect = self.image.get_rect()
         self.rect.center = [gV.WindowSize[0] / 2, gV.WindowSize[1] - self.size[1]]
@@ -20,38 +24,51 @@ class Player(pg.sprite.Sprite):
     def setMissileSound(self, sound: pg.mixer.Sound):
         self.missileSound = sound
 
-    def setWeapon(self):
-        self.weapon = Weapon()
-
     def handleEvents(self):
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
-                if event.key == pg.K_LEFT:
-                    self.movementSpeed = -3
-                elif event.key == pg.K_RIGHT:
-                    self.movementSpeed = 3
+                if event.key == pg.K_a:
+                    self.movementSpeedX = -3
+                elif event.key == pg.K_d:
+                    self.movementSpeedX = 3
+                elif event.key == pg.K_w:
+                    self.movementSpeedY = -3
+                elif event.key == pg.K_s:
+                    self.movementSpeedY = 3
+                elif event.key == pg.K_e:
+                    weaponIndex = self.weapons.index(self.activeWeapon)
+                    if weaponIndex + 1 < len(self.weapons):
+                        self.activeWeapon = self.weapons[weaponIndex + 1]
+                    else:
+                        self.activeWeapon = self.weapons[0]
                 elif event.key == pg.K_SPACE:
-                    curWeapon = self.weapon.getWeapon()
+                    curWeapon = self.activeWeapon
                     #  missile cooldown check
-                    if gV.game_clock - gV.time_since_last_missile >= curWeapon["cooldown"]:
-                        # spawn missiles
+                    if gV.game_clock - gV.time_since_last_missile >= curWeapon.cooldown:
                         pg.mixer.Sound.play(self.missileSound)
-                        for m in range(curWeapon["amount"]):
-                            caliber = Missiles.Missile(curWeapon["damage"], curWeapon["image"],
-                                                       curWeapon["cooldown"], curWeapon["position"][m])
+                        # update ammo
+                        curWeapon.decreaseAmmo()
+                        # spawn missiles
+                        for m in range(curWeapon.amount):
+                            caliber = Missiles.Missile(curWeapon.damage, curWeapon.image,
+                                                       curWeapon.cooldown, curWeapon.position[m])
                             gV.SPRITES.add(caliber)
                             gV.time_since_last_missile = pg.time.get_ticks()
-                            self.weapon.decreaseAmmo(self.weapon.getWeapon()["name"]) # update ammo
             if event.type == pg.KEYUP:
-                if event.key == pg.K_LEFT:
-                    self.movementSpeed = 0
-                elif event.key == pg.K_RIGHT:
-                    self.movementSpeed = 0
+                if event.key == pg.K_a:
+                    self.movementSpeedX = 0
+                elif event.key == pg.K_d:
+                    self.movementSpeedX = 0
+                elif event.key == pg.K_w:
+                    self.movementSpeedY = 0
+                elif event.key == pg.K_s:
+                    self.movementSpeedY = 0
             if event.type == pg.QUIT:
                 sys.exit()
 
     def update(self):
-        self.rect = self.rect.move(self.movementSpeed, 0)
+        self.rect = self.rect.move(self.movementSpeedX, 0)  # Horizontal movement
+        self.rect = self.rect.move(0, self.movementSpeedY)  # Vertical movement
         collided = pg.sprite.spritecollide(self, gV.MOBS, dokill=False)
         if len(collided) > 0:
             gV.gameRunning = False
@@ -60,14 +77,15 @@ class Player(pg.sprite.Sprite):
             self.rect.left = 0
         if self.rect.right >= gV.WindowSize[0]:
             self.rect.right = gV.WindowSize[0]
+        if self.rect.top < 0:
+            self.rect.top = 0
+        if self.rect.bottom > gV.WindowSize[1]:
+            self.rect.bottom = gV.WindowSize[1]
         # Check ammo
-        if self.weapon.getWeapon()["ammo"][0] == 0 and self.weapon.getWeapon()["name"] != "Basic":
-            self.weapon.resetAmmo(self.weapon.getWeapon()["name"])
-            self.weapon.active = "Basic"
+        if self.activeWeapon.ammo[0] == 0 and self.activeWeapon.name != "Basic":
+            self.activeWeapon.resetAmmo()
+            self.activeWeapon = "Basic"
 
-
-    # TODO: Interaction between player and items collected
-    # TODO: Change weapon value and check per press of spacebar what the ammunition is and update accordingly
     def itemCollect(self, itemId: int):
         item = gV.ITEMS.items[itemId]
         if item["type"] == "threat":
@@ -76,7 +94,8 @@ class Player(pg.sprite.Sprite):
             else:
                 gV.gameRunning = False
         if item["type"] == "weapon":
-            if self.weapon.active == item["name"]: # Weapon is currently active
-                self.weapon.resetAmmo(self.weapon.getWeapon()["name"])
-            else:
-                self.weapon.active = item["name"]
+            for weapon in self.weapons:
+                if weapon.name == item["name"]:
+                    weapon.resetAmmo()
+                    return
+            self.weapons.append(Weapon(self.armory.modes[item["name"]]))

@@ -15,7 +15,6 @@ clock = pygame.time.Clock()
 # player
 player1 = gV.player1
 player1.setMissileSound(missile_sound)
-player1.setWeapon()
 gV.PLAYERS.add(player1)
 # Background
 bg = pygame.image.load("images/background.png").convert()
@@ -36,9 +35,9 @@ def draw_hitpoints(hitpoints):
 
 def draw_weapon():
     gameWindow.blit(pygame.image.load(
-        player1.weapon.getWeapon()["display"]).convert(), (gV.WindowSize[0] - 40, 10)
+        player1.activeWeapon.display).convert(), (gV.WindowSize[0] - 40, 10)
                     )
-    draw_text(str(player1.weapon.getWeapon()["ammo"][0]), (255, 255, 255), 25, [gV.WindowSize[0] - 70, 20])
+    draw_text(str(player1.activeWeapon.ammo[0]), (255, 255, 255), 25, [gV.WindowSize[0] - 70, 20])
 
 class GameState():
     def __init__(self):

@@ -1,7 +1,22 @@
-import math
+class Weapon:
+    def __init__(self, specs: dict):
+        self.name = specs["name"]
+        self.damage = specs["damage"]
+        self.image = specs["image"]
+        self.display = specs["display"]
+        self.cooldown = specs["cooldown"]
+        self.amount = specs["amount"]
+        self.position = specs["position"]
+        self.ammo = specs["ammo"]
+
+    def decreaseAmmo(self):
+        self.ammo[0] -= 1
+
+    def resetAmmo(self):
+        self.ammo[0] = self.ammo[1]
 
 
-class Weapon():
+class Armory:
     def __init__(self):
         self.modes = \
             {"Basic": {"damage": 1, "image": "images/missile.png", "display": "images/missile.png",
@@ -11,16 +26,7 @@ class Weapon():
                          "cooldown": 100, "amount": 2, "position": ["topleft", "topright"], "ammo": [30, 30],
                          "name": "Weapon2"}
              }
-        self.active = "Basic"
 
-    def getWeapon(self):
-        return self.modes[self.active]
-
-    def decreaseAmmo(self, weapon):
-        self.modes[weapon]["ammo"][0] -= 1
-
-    def resetAmmo(self, weapon):
-        self.modes[weapon]["ammo"][0] = self.modes[weapon]["ammo"][1]
 
 
 
