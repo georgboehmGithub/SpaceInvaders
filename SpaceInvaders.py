@@ -38,7 +38,7 @@ def draw_weapon():
         player1.activeWeapon.display).convert(), (gV.WindowSize[0] - 40, 10)
                     )
     draw_text(str(player1.activeWeapon.ammo[0]), (255, 255, 255), 25, [gV.WindowSize[0] - 70, 20])
-
+# i = 0
 class GameState():
     def __init__(self):
         self.state = "intro"
@@ -91,9 +91,9 @@ class GameState():
             self.state = "game_over"
             return
         # Draw scene
-        gameWindow.blit(bg, (0, 0)) # Background
-        draw_hitpoints(player1.hitpoints) # Hitpoints
-        draw_weapon() # Active weapon
+        gameWindow.blit(bg, (0, 0))  # Background
+        draw_hitpoints(player1.hitpoints)  # Hitpoints
+        draw_weapon()  # Active weapons
         gV.SPRITES.draw(gameWindow)
         gV.MOBS.draw(gameWindow)
         gV.PLAYERS.draw(gameWindow)
@@ -115,5 +115,6 @@ class GameState():
 # main procedure
 gameState = GameState()
 while True:
+    gV.frame += 1
     gameState.manageState()
     clock.tick_busy_loop(60)

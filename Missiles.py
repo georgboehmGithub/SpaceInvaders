@@ -4,9 +4,10 @@ import pygame as pg
 from random import randint
 
 class Missile(pg.sprite.Sprite):
-    def __init__(self, damage, image, cooldown, pos):
+    def __init__(self, damage, image, cooldown, pos, weaponName):
         pg.sprite.Sprite.__init__(self)
         self.objType = "Missile"
+        self.weapon = weaponName
         self.movementSpeed = -10
         self.image = pygame.image.load(image)
         self.size = (self.image.get_width(), self.image.get_height())
@@ -15,6 +16,19 @@ class Missile(pg.sprite.Sprite):
         self.last = pygame.time.get_ticks()
         self.cooldown = cooldown
         self.damage = damage
+        self.curImageIndex = 0
+
+    def animate(self):
+        specs = gV.player1.armory.modes[self.weapon]
+        if "rects" in specs:
+            self.curImageIndex += 1
+            if self.curImageIndex == len(specs["rects"]):
+                self.curImageIndex = 0
+            elif gV.frame % 5 == 0:
+                curRect = specs["rects"][self.curImageIndex]
+                img = pygame.Surface(curRect.size).convert()
+                img.blit(gV.spriteSheet, (0, 0), curRect)
+                self.image = img
 
     def setPosition(self, position):
         if position == "topright":
@@ -32,6 +46,7 @@ class Missile(pg.sprite.Sprite):
                 gV.hits += 1
 
     def update(self):
+        self.animate()
         if self.rect.bottom < 0:
             self.kill()
         self.rect = self.rect.move(0, self.movementSpeed)

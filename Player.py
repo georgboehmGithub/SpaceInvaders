@@ -42,6 +42,10 @@ class Player(pg.sprite.Sprite):
                     else:
                         self.activeWeapon = self.weapons[0]
                 elif event.key == pg.K_SPACE:
+                    # Check ammo
+                    if self.activeWeapon.ammo[0] == 1 and self.activeWeapon.name != "Basic":
+                        self.activeWeapon.resetAmmo()
+                        self.activeWeapon = self.weapons[0]  # Basic weapon
                     curWeapon = self.activeWeapon
                     #  missile cooldown check
                     if gV.game_clock - gV.time_since_last_missile >= curWeapon.cooldown:
@@ -51,7 +55,8 @@ class Player(pg.sprite.Sprite):
                         # spawn missiles
                         for m in range(curWeapon.amount):
                             caliber = Missiles.Missile(curWeapon.damage, curWeapon.image,
-                                                       curWeapon.cooldown, curWeapon.position[m])
+                                                       curWeapon.cooldown, curWeapon.position[m],
+                                                       curWeapon.name)
                             gV.SPRITES.add(caliber)
                             gV.time_since_last_missile = pg.time.get_ticks()
             if event.type == pg.KEYUP:
@@ -81,10 +86,6 @@ class Player(pg.sprite.Sprite):
             self.rect.top = 0
         if self.rect.bottom > gV.WindowSize[1]:
             self.rect.bottom = gV.WindowSize[1]
-        # Check ammo
-        if self.activeWeapon.ammo[0] == 0 and self.activeWeapon.name != "Basic":
-            self.activeWeapon.resetAmmo()
-            self.activeWeapon = "Basic"
 
     def itemCollect(self, itemId: int):
         item = gV.ITEMS.items[itemId]

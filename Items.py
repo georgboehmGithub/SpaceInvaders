@@ -22,9 +22,11 @@ class Item(pg.sprite.Sprite):
             self.kill()
             gV.player1.itemCollect(self.id)
 
+
 class ItemList():
     def __init__(self):
         self.items = {
             0: {"name": "Bomb", "roll": range(0, 20), "image": "images/bomb.png", "type": "threat"},
-            1: {"name": "Weapon2", "roll": range(20,70), "image": "images/bomb_powerup.png", "type": "weapon"}
+            1: {"name": "Weapon2", "roll": range(20, 30), "image": "images/bomb_powerup.png", "type": "weapon"},
+            2: {"name": "AlienCannon", "roll": range(30, 35), "image": "images/alienCannon.png", "type": "weapon"}
         }
